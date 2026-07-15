@@ -1,10 +1,11 @@
-ProjetoautomacaoAPI
+# ProjetoautomacaoAPI
 
 Projeto  de testes de API usando Playwright + playwright-bdd + TypeScript, testando a API pública FakeRestAPI.
 
 A arquitetura usa features Gherkin em português (keywords em inglês) como única fonte de teste, sobre uma camada genérica de steps parametrizados e um wrapper HTTP fino em cima do APIRequestContext do Playwright.
 
-Stack
+# Stack
+
 Categoria	Ferramenta	Versão
 Linguagem	TypeScript	^5.8.3
 Runtime	@playwright/test	1.58.2
@@ -13,7 +14,8 @@ HTTP client	APIRequestContext (Playwright)	—
 Relatórios	line, html, junit (results.xml)	—
 As versões de @playwright/test e playwright-bdd estão fixas (sem ^): o playwright-bdd 8.5.1 não é compatível com Playwright >= 1.60.
 
-Estrutura
+# Estrutura
+
 ProjetoautomacaoAPI/
 ├── Tests/Features/<Recurso>/<Recurso>.feature   # Gherkin (fonte única de teste)
 ├── stepgen/Config/
@@ -24,7 +26,9 @@ ProjetoautomacaoAPI/
 ├── playwright.config.ts   # defineBddConfig + reporters + baseURL
 ├── tsconfig.json
 └── package.json
-Como rodar
+
+# Como rodar
+
 npm install
 npx playwright install        # baixa os browsers (o script pretest só roda o bddgen)
 
