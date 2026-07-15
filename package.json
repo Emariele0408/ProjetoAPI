@@ -1,0 +1,25 @@
+{
+  "name": "projetoautomacao-api",
+  "version": "1.0.0",
+  "description": "Testes de API simples com Playwright + playwright-bdd contra a FakeRestAPI",
+  "scripts": {
+    "bddgen": "bddgen",
+    "pretest": "bddgen",
+    "test": "playwright test",
+    "test:smoke": "bddgen && playwright test --grep @Smoke",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "bdd",
+    "api",
+    "testes"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "1.58.2",
+    "@types/node": "^22.10.0",
+    "playwright-bdd": "8.5.1",
+    "typescript": "^5.8.3"
+  }
+}
