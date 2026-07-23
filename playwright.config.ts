@@ -1,36 +1,59 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 import { defineBddConfig } from 'playwright-bdd';
 
 /**
- * Gera os arquivos .spec.js a partir dos .feature (Gherkin) usando playwright-bdd.
- * - features: fonte única de teste, em português com keywords Gherkin em inglês.
- * - steps: step definitions genéricas e parametrizadas.
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
+ */
+// import dotenv from 'dotenv';
+// import path from 'path';
+// dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+/**
+ * Configuração do BDD (playwright-bdd)
+ * Ajuste os caminhos abaixo conforme a estrutura real do seu projeto.
  */
 const testDir = defineBddConfig({
   features: 'Tests/Features/**/*.feature',
-  steps: 'stepgen/Config/**/*.ts',
+  steps: 'stepgen/**/*.ts',
 });
 
-const BASE_URL =
-  process.env.BASE_URL ?? 'https://fakerestapi.azurewebsites.net';
-
+/**
+ * See https://playwright.dev/docs/test-configuration.
+ */
 export default defineConfig({
   testDir,
+  /* Run tests in files in parallel */
   fullyParallel: true,
+  /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : 0,
-  workers: process.env.WORKERS ? Number(process.env.WORKERS) : undefined,
-  reporter: [
-    ['line'],
-    ['html', { open: 'never' }],
-    ['junit', { outputFile: 'results.xml' }],
-  ],
+  /* Retry on CI only */
+  retries: process.env.CI ? 2 : 0,
+  /* Opt out of parallel tests on CI. */
+  workers: process.env.CI ? 1 : undefined,
+  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  reporter: 'html',
+  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL: BASE_URL,
-    extraHTTPHeaders: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    trace: 'retain-on-failure',
+    baseURL: process.env.API_BASE_URL || 'https://fakerestapi.azurewebsites.net',
+    trace: 'on-first-retry',
   },
+
+  /* Configure projects for major browsers */
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+  ],
 });

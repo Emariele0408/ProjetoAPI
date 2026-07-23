@@ -1,12 +1,5 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
 
-/**
- * Wrapper fino sobre o APIRequestContext nativo do Playwright.
- * Centraliza os verbos HTTP para os steps não dependerem diretamente da API do Playwright.
- *
- * A baseURL e os headers padrão vêm da config (use.baseURL / use.extraHTTPHeaders),
- * então aqui só passamos o path relativo (ex.: '/api/v1/Books').
- */
 export class Driver {
   constructor(private readonly request: APIRequestContext) {}
 

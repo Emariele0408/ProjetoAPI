@@ -11,6 +11,10 @@
 export class CookieJar {
   private readonly vars = new Map<string, string>();
 
+  // ---------------------------------------------------------------------
+  // Armazenamento
+  // ---------------------------------------------------------------------
+
   set(name: string, value: unknown): void {
     this.vars.set(name, String(value));
   }
@@ -18,6 +22,10 @@ export class CookieJar {
   get(name: string): string | undefined {
     return this.vars.get(name);
   }
+
+  // ---------------------------------------------------------------------
+  // Resolução de placeholders
+  // ---------------------------------------------------------------------
 
   /**
    * Substitui todas as ocorrências de {nome} no texto.
@@ -50,6 +58,10 @@ export class CookieJar {
         return undefined;
     }
   }
+
+  // ---------------------------------------------------------------------
+  // Utilitários
+  // ---------------------------------------------------------------------
 
   private static uuid(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {

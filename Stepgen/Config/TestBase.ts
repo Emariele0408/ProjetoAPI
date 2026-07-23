@@ -1,5 +1,5 @@
 import { createBdd, DataTable } from 'playwright-bdd';
-import { test, expect, ScenarioContext } from './fixtures';
+import { test, expect, ScenarioContext } from './Fixture';
 
 const { When, Then } = createBdd(test);
 
@@ -21,13 +21,25 @@ function getByPath(source: unknown, path: string): unknown {
   return current;
 }
 
-/** Extrai o JSON da coluna BODY de uma DataTable e resolve placeholders. */
+/**
+ * Extrai o JSON da coluna BODY de uma DataTable, resolve placeholders e faz o parse.
+ * Lança um erro claro (com o texto resolvido) se o JSON estiver malformado.
+ */
 function resolveBody(ctx: ScenarioContext, table: DataTable): unknown {
   const raw = table.hashes()[0]?.BODY;
   if (raw === undefined) {
     throw new Error("A tabela deve ter uma coluna 'BODY' com o JSON do corpo.");
   }
-  return JSON.parse(ctx.jar.resolve(raw));
+
+  const resolved = ctx.jar.resolve(raw);
+
+  try {
+    return JSON.parse(resolved);
+  } catch {
+    throw new Error(
+      `BODY inválido: não é um JSON válido após resolver os placeholders.\nConteúdo resolvido: ${resolved}`,
+    );
+  }
 }
 
 // ---------------------------------------------------------------------------
