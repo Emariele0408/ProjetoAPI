@@ -1,9 +1,0 @@
-node_modules/
-.features-gen/
-test-results/
-playwright-report/
-allure-results/
-allure-report/
-results.xml
-*.log
-.env.local
